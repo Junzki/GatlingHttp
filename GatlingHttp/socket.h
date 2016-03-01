@@ -2,7 +2,7 @@
 //  socket.h
 //  GatlingHttp
 //
-//  Created by 孟凡钧 on 3/1/16.
+//  Created by Andrew Junzki on 3/1/16.
 //  Copyright © 2016 Andrew Junzki. All rights reserved.
 //
 
