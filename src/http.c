@@ -29,10 +29,10 @@ http_handler (int client_sock)
     char* method;
     char full_path[URL_MAX_LENGTH];
 
-    buffer = (char*)malloc(BUF_SIZ * sizeof(char));
+    buffer = (char*)malloc(BUFSIZ * sizeof(char));
 
     // Parse HTTP method
-    line_count = get_line(client_sock, buffer, BUF_SIZ);
+    line_count = get_line(client_sock, buffer, BUFSIZ);
     method = strtok(buffer, " ");
     if (method != NULL)
     {
@@ -49,7 +49,7 @@ http_handler (int client_sock)
     // Parse request body.
     while((line_count > 0) && strcmp("\n", buffer))
     {
-        line_count = get_line(client_sock, buffer, BUF_SIZ);
+        line_count = get_line(client_sock, buffer, BUFSIZ);
     }
 }
 
@@ -120,14 +120,14 @@ cat (int client_sock, char* file_path)
     content_length = (int)ftell(fp);
     rewind(fp);
 
-    buffer = (char*)malloc(BUF_SIZ*sizeof(char));
+    buffer = (char*)malloc(BUFSIZ*sizeof(char));
     while (send_length < content_length)
     {
         size_t siz;
-        if (content_length < BUF_SIZ)
+        if (content_length < BUFSIZ)
             siz = (size_t)content_length;
         else
-            siz = (size_t)BUF_SIZ;
+            siz = (size_t)BUFSIZ;
 
         fread(buffer, 1, siz, fp);
         send(client_sock, buffer, siz, 0);
