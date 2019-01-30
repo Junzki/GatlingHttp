@@ -1,18 +1,15 @@
-//
-// Created by Andrew Junzki on 3/1/16.
-//
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include <strings.h>
 #include <arpa/inet.h>
+#include <sys/ioctl.h>
 
+#include "asset.h"
 #include "http.h"
 #include "socket.h"
 
 int get_line(int, char*, size_t);
 void http_200_ok (int, char*);
 void cat (int, char*);
+int get_raw_request(int, char**);
 
 const char* GET = "GET";
 const char* POST = "POST";
@@ -134,4 +131,17 @@ cat (int client_sock, char* file_path)
         send_length += siz;
         content_length -= ftell(fp);
     }
+}
+
+
+int
+get_raw_request(int clientfd, char** buf)
+{
+    ssize_t nread = 0;
+
+    ioctl(clientfd, FIONREAD, &nread);
+    *buf = (char*)malloc(nread);
+
+    nread = read(clientfd, *buf, nread);
+    return nread;
 }
